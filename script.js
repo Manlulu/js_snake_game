@@ -20,8 +20,6 @@ function init(){
 
 function startNewGame(){
     drawNewGame();
-
-
     checkHighScore();
     highScore = localStorage.getItem("score");
 
