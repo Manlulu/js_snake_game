@@ -93,25 +93,25 @@ function checkIfhitSelf(){
 function checkIfEatFruit(){
     if(snake[0].x == fruit.x && snake[0].y == fruit.y){
 
-
         while(true){
             fruit = drawFruit();
-            var hit = false;
-            for(var i = 0; i < snake.length; i++){
-                if(snake[i].x == fruit.x && snake[i].y == fruit.y){
-                    hit = true;
-                }
-            }
-            if(hit == false){
+            if(!checkIfFruitIsOnSnake()){
                 break;
             }
         }
 
-
-
         snake.push({x:snake[0].x, y:snake[0].y});
         score++;
     }
+}
+
+function checkIfFruitIsOnSnake(){
+    for(var i = 0; i < snake.length; i++){
+        if(snake[i].x == fruit.x && snake[i].y == fruit.y){
+            return true;
+        }
+    }
+    return false;
 }
 
 function checkIfHitWall(){
