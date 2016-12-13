@@ -92,20 +92,16 @@ function checkIfhitSelf(){
 
 function checkIfEatFruit(){
     if(snake[0].x == fruit.x && snake[0].y == fruit.y){
-
-        while(true){
+        do {
             fruit = drawFruit();
-            if(!checkIfFruitIsOnSnake()){
-                break;
-            }
-        }
+        }while(fruitIsOnSnake());
 
-        snake.push({x:snake[0].x, y:snake[0].y});
+        snake.push({x: snake[0].x, y: snake[0].y});
         score++;
     }
 }
 
-function checkIfFruitIsOnSnake(){
+function fruitIsOnSnake(){
     for(var i = 0; i < snake.length; i++){
         if(snake[i].x == fruit.x && snake[i].y == fruit.y){
             return true;
