@@ -28,7 +28,7 @@ function init(){
 function startNewGame(){
     drawNewGame();
     checkHighScore();
-    highScore = localStorage.getItem("score");
+    highScore = localStorage.getItem("score") || 0;
 
     snake = [];
     score = 0;
