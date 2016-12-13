@@ -94,7 +94,19 @@ function checkIfEatFruit(){
     if(snake[0].x == fruit.x && snake[0].y == fruit.y){
 
 
-        fruit = drawFruit();
+        while(true){
+            fruit = drawFruit();
+            var hit = false;
+            for(var i = 0; i < snake.length; i++){
+                if(snake[i].x == fruit.x && snake[i].y == fruit.y){
+                    hit = true;
+                }
+            }
+            if(hit == false){
+                break;
+            }
+        }
+
 
 
         snake.push({x:snake[0].x, y:snake[0].y});
