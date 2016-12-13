@@ -8,14 +8,8 @@ var fruit = {}; // Skal inneholde en json med x og y.
 
 var score = 0;
 var highScore = 0;
-var newGame = true;
-
-/* Notat
-
-- Når du er 1 lang, så kan du ikke gå frem og tilbake.
-- Du skal ikke kunne gå tilbake, og kræsje i deg selv, og dø.
-
-*/
+var lastHighScore = 0;
+var gameStop = true;
 
 var MoveDirection = {
     LEFT: 0,
@@ -25,7 +19,6 @@ var MoveDirection = {
 };
 var movingDirection = MoveDirection.RIGHT;
 
-
 init();
 
 function init(){
@@ -34,15 +27,14 @@ function init(){
 
 function startNewGame(){
     drawNewGame();
-    checkHighScore();
-    highScore = localStorage.getItem("score") || 0;
+    lastHighScore = localStorage.getItem("score") || 0;
 
     snake = [];
     score = 0;
     snake.push({x: 5, y: 5});
     snake.push({x: snake[0].x, y: 5});
     movingDirection = MoveDirection.RIGHT;
-    if(!newGame){
+    if(!gameStop){
         fruit = drawFruit();
         gameLoop();
     } else {
@@ -58,7 +50,7 @@ function checkHighScore(){
 }
 
 function gameLoop(){
-    if(newGame == false){
+    if(gameStop == false){
         update();
         draw();
         setTimeout(gameLoop, 1000 / 5); // 5 fps
@@ -84,7 +76,7 @@ function moveSnake(){
 function checkIfhitSelf(){
     for(var i = 1; i < snake.length; i++){
         if(snake[0].x == snake[i].x && snake[0].y == snake[i].y){
-            newGame = true;
+            gameStop = true;
             startNewGame();
         }
     }
@@ -98,6 +90,7 @@ function checkIfEatFruit(){
 
         snake.push({x: snake[0].x, y: snake[0].y});
         score++;
+        checkHighScore();
     }
 }
 
@@ -112,7 +105,7 @@ function fruitIsOnSnake(){
 
 function checkIfHitWall(){
     if(snake[0].x < 0 || snake[0].x >= gridSize.cols || snake[0].y < 0 || snake[0].y >= gridSize.rows){
-        newGame = true;
+        gameStop = true;
         startNewGame();
     }
 }
@@ -122,6 +115,7 @@ function draw(){
     context.fillStyle = "#001";
     context.fillRect(0, 0, canvas.width, canvas.height);
 
+    // draw fruit
     context.fillStyle = "#f45";
     context.fillRect(fruit.x * boxSize.width, fruit.y * boxSize.height, boxSize.width, boxSize.height);
 
@@ -135,10 +129,10 @@ function draw(){
         context.fillRect(snake[i].x * boxSize.width, snake[i].y * boxSize.height, boxSize.width, boxSize.height )
     }
 
+    // draw score text
     context.fillStyle = "#fff";
     context.font = "30px Verdana";
-
-    context.fillText("HighScore: " + highScore + ". Score: " + score, canvas.width / 3, canvas.height / 4);
+    context.fillText("HighScore: " + lastHighScore + ". Score: " + score, canvas.width / 3, canvas.height / 4);
 }
 
 function drawNewGame(){
@@ -159,7 +153,6 @@ function drawFruit(){
 }
 
 function nextHead(){
-    lastDirection = movingDirection;
     if(movingDirection == MoveDirection.LEFT){
         snake[0].x--;
     } else if(movingDirection == MoveDirection.UP) {
@@ -169,6 +162,7 @@ function nextHead(){
     } else if(movingDirection == MoveDirection.DOWN){
         snake[0].y++;
     }
+    lastDirection = movingDirection;
 }
 var lastDirection = movingDirection;
 document.addEventListener('keydown', function(event){
@@ -196,7 +190,7 @@ document.addEventListener('keydown', function(event){
             }
             break;
         case 78:
-            newGame = false;
+            gameStop = false;
             break;
     }
 })
