@@ -7,6 +7,7 @@ var snake = [];
 var fruit = {}; // Skal inneholde en json med x og y.
 var movingDirection = "right";
 var score = 0;
+var highScore = 0;
 var newGame = true;
 
 
@@ -20,6 +21,10 @@ function init(){
 function startNewGame(){
     drawNewGame();
 
+
+    checkHighScore();
+    highScore = localStorage.getItem("score");
+
     snake = [];
     score = 0;
     snake.push({x: 5, y: 5});
@@ -27,6 +32,13 @@ function startNewGame(){
     movingDirection = "right";
     if(!newGame){
         fruit = drawFruit();
+    }
+}
+
+function checkHighScore(){
+    if(score > highScore){
+        highScore = score;
+        localStorage.setItem("score", highScore);
     }
 }
 
@@ -100,7 +112,7 @@ function draw(){
     context.fillStyle = "#fff";
     context.font = "30px Verdana";
 
-    context.fillText(score, canvas.width / 2, canvas.height / 4);
+    context.fillText("HighScore: " + highScore + ". Score: " + score, canvas.width / 3, canvas.height / 4);
 }
 
 function drawNewGame(){
