@@ -10,6 +10,12 @@ var score = 0;
 var highScore = 0;
 var newGame = true;
 
+/* Notat
+
+- Når du er 1 lang, så kan du ikke gå frem og tilbake.
+- Du skal ikke kunne gå tilbake, og kræsje i deg selv, og dø.
+
+*/
 
 init();
 
@@ -124,7 +130,7 @@ function drawNewGame(){
     context.fillStyle = "#fff";
     context.font = "30px Verdana";
 
-    context.fillText("Start new game", canvas.width / 3, canvas.height / 4);
+    context.fillText("Press 'n' for new game", canvas.width / 3, canvas.height / 4);
 }
 
 function drawFruit(){
