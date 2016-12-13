@@ -61,7 +61,7 @@ function gameLoop(){
     if(newGame == false){
         update();
         draw();
-        setTimeout(gameLoop, 1000 / 2); // 5 fps
+        setTimeout(gameLoop, 1000 / 5); // 5 fps
     }
 }
 
@@ -92,7 +92,11 @@ function checkIfhitSelf(){
 
 function checkIfEatFruit(){
     if(snake[0].x == fruit.x && snake[0].y == fruit.y){
+
+
         fruit = drawFruit();
+
+
         snake.push({x:snake[0].x, y:snake[0].y});
         score++;
     }
