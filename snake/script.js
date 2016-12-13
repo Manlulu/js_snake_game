@@ -5,7 +5,7 @@ var gridSize = {cols: 15, rows: 15};
 var boxSize = {width: Math.ceil(canvas.width / gridSize.cols), height: Math.ceil(canvas.height / gridSize.rows)};
 var snake = [];
 var fruit = {}; // Skal inneholde en json med x og y.
-var movingDirection = "right";
+
 var score = 0;
 var highScore = 0;
 var newGame = true;
@@ -17,12 +17,19 @@ var newGame = true;
 
 */
 
+var MoveDirection = {
+    LEFT: 0,
+    UP: 1,
+    RIGHT: 2,
+    DOWN: 3
+};
+var movingDirection = MoveDirection.RIGHT;
+
+
 init();
 
 function init(){
     startNewGame();
-    console.log("Før gameloop")
-
 }
 
 function startNewGame(){
@@ -34,14 +41,13 @@ function startNewGame(){
     score = 0;
     snake.push({x: 5, y: 5});
     snake.push({x: snake[0].x, y: 5});
-    movingDirection = "right";
+    movingDirection = MoveDirection.RIGHT;
     if(!newGame){
         fruit = drawFruit();
         gameLoop();
     } else {
         setTimeout(init, 1000 / 5);
     }
-    console.log("Etter if else")
 }
 
 function checkHighScore(){
@@ -55,11 +61,12 @@ function gameLoop(){
     if(newGame == false){
         update();
         draw();
-        setTimeout(gameLoop, 1000 / 5); // 5 fps
+        setTimeout(gameLoop, 1000 / 2); // 5 fps
     }
 }
 
 function update(){
+
     moveSnake();
     nextHead();
     checkIfhitSelf();
@@ -140,33 +147,43 @@ function drawFruit(){
 }
 
 function nextHead(){
-    if(movingDirection == "left"){
+    lastDirection = movingDirection;
+    if(movingDirection == MoveDirection.LEFT){
         snake[0].x--;
-    } else if(movingDirection == "up") {
+    } else if(movingDirection == MoveDirection.UP) {
         snake[0].y--;
-    } else if(movingDirection == "right"){
+    } else if(movingDirection == MoveDirection.RIGHT){
         snake[0].x++;
-    } else if(movingDirection == "down"){
+    } else if(movingDirection == MoveDirection.DOWN){
         snake[0].y++;
     }
 }
-
+var lastDirection = movingDirection;
 document.addEventListener('keydown', function(event){
+
+
     switch (event.keyCode) {
         case 37:
-            movingDirection = "left";
+            if(lastDirection != MoveDirection.RIGHT){
+                movingDirection = MoveDirection.LEFT;
+            }
             break;
         case 38:
-            movingDirection = "up";
+            if(lastDirection != MoveDirection.DOWN){
+                movingDirection = MoveDirection.UP;
+            }
             break;
         case 39:
-            movingDirection = "right";
+            if(lastDirection != MoveDirection.LEFT){
+                movingDirection = MoveDirection.RIGHT;
+            }
             break;
         case 40:
-            movingDirection = "down";
+            if(lastDirection != MoveDirection.UP){
+                movingDirection = MoveDirection.DOWN;
+            }
             break;
         case 78:
-            console.log("Pressed n")
             newGame = false;
             break;
     }
